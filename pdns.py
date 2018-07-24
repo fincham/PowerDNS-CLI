@@ -121,7 +121,7 @@ class PDNSControl(object):
                 "nameservers": []
             }
 
-        zone_check_uri = ("http://%s:%s/api/v1/servers/localhost/zones/%s"
+        zone_check_uri = ("https://%s:%s/api/v1/servers/localhost/zones/%s"
                           % (self.args.apihost, self.args.apiport, self.args.zone))
         logger.debug("sending GET request to %s" % zone_check_uri)
         zone_check = requests.get(zone_check_uri, headers=self.headers)
@@ -258,7 +258,7 @@ class PDNSControl(object):
         try:
             def_web_port = os.environ['WEB_PORT']
         except KeyError:
-            def_web_port = '8081'
+            def_web_port = '443'
 
         parser = argparse.ArgumentParser(description='PDNS Controls...')
         parser.add_argument('action', help='Define action to take',
@@ -302,19 +302,19 @@ class PDNSControl(object):
         self.headers = {'X-API-Key': self.args.apikey}
         if (self.args.action == "add_zone" or (self.args.action == "query_zone" and
                                                 self.args.zone is None)):
-            self.uri = ("http://%s:%s/api/v1/servers/localhost/zones"
+            self.uri = ("https://%s:%s/api/v1/servers/localhost/zones"
                         % (self.args.apihost, self.args.apiport))
         elif self.args.action == "add_record" \
               or self.args.action == "delete_record" \
               or self.args.action == "delete_zone" \
               or self.args.action == "query_zone":
-            self.uri = ("http://%s:%s/api/v1/servers/localhost/zones/%s"
+            self.uri = ("https://%s:%s/api/v1/servers/localhost/zones/%s"
                         % (self.args.apihost, self.args.apiport, self.args.zone))
         elif self.args.action == "query_config":
-            self.uri = ("http://%s:%s/api/v1/servers/localhost/config"
+            self.uri = ("https://%s:%s/api/v1/servers/localhost/config"
                         % (self.args.apihost, self.args.apiport))
         elif self.args.action == "query_stats":
-            self.uri = ("http://%s:%s/api/v1/servers/localhost/statistics"
+            self.uri = ("https://%s:%s/api/v1/servers/localhost/statistics"
                         % (self.args.apihost, self.args.apiport))
 
 if __name__ == '__main__':
